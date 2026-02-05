@@ -1,0 +1,163 @@
+{% extends "base2.html" %}
+{% load static %}
+{% block title %}Detection{% endblock title %}
+{% block content %}
+
+        <style>
+        /* Custom File Upload */
+        .custom-file-upload {
+            display: block;
+            border: 2px dashed #f74780;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #555;
+            font-weight: 500;
+            background-color: #f9f9f9;
+        }
+        
+        .custom-file-upload:hover {
+            background-color: #e9ecef;
+            border-color: #f74780;
+            color: #f74780;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .custom-file-upload i {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+        #loaderOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        </style>
+
+        <!-- Header Start -->
+        <div class="container-fluid bg-breadcrumb">
+            <ul class="breadcrumb-animation">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Detection</h1>
+                <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                    <li class="breadcrumb-item"><a href="{% url 'user_dashboard' %}">User</a></li>
+                    <li class="breadcrumb-item active text-primary">Detection</li>
+                </ol>    
+            </div>
+        </div>
+        <!-- Header End -->
+        
+        <!-- Detection Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row g-4 d-lg-flex align-items-center justify-content-center bg-light rounded p-4">
+                    <!-- Profile Image (Left on large screens, Top on small screens) -->
+                    <div class="col-md-5 col-lg-4 d-flex flex-column align-items-center">
+                        <div class="mb-3">
+                            <img id="detectionImage" src="{% static "user/img/image.jpg" %}" alt="Detection Picture" 
+                                 style="border-radius: 4px; width: 300px; height: 300px; object-fit: cover; border: 3px solid #f74780;">
+                        </div>
+                    </div>
+                
+                    <!-- Upload Section (Right on large screens, Below on small screens) -->
+                    <div class="col-md-7 col-lg-6">
+                        <div class="bg-light rounded d-flex flex-column align-items-center p-4" style="border-radius: 15px;">
+                            <h3 class="text-center pb-4 fw-bold" style="color: #333;">Upload Image for Detection</h3>
+
+                            <form style="width: 100%;" method="POST" enctype="multipart/form-data" id="detectionForm">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                
+                                    <!-- Hidden input to store selected model -->
+                                    <input type="hidden" id="selectedModel" name="model_type" value="">
+                                
+                                    <!-- Custom File Input -->
+                                    <div class="col-12">
+                                        <label for="uploadInput" class="custom-file-upload w-100">
+                                            <i class="fa fa-cloud-upload-alt"></i> Choose an Image
+                                        </label>
+                                        <input type="file" id="uploadInput" name="image" accept="image/*" class="form-control d-none">
+                                    </div>
+                                
+                                    <!-- Submit Button -->
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary w-100 py-2">
+                                            Detect Image
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- Spinner/Loader -->
+                            <div id="loaderOverlay" style="display: none;">
+                                <div class="loader-content">
+                                    <img src="{% static 'user/img/loader.gif' %}" alt="Loading..." style="width: 300px;">
+                                    <p style="color: white; font-size: 18px;">Processing image, please wait...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+        <!-- Detection End -->
+
+        <!-- Picture Upload -->
+        <script>
+            document.getElementById("uploadInput").addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("detectionImage").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        
+            document.addEventListener('DOMContentLoaded', () => {
+                const modelButtons = document.querySelectorAll('.model-btn');
+                const selectedModelInput = document.getElementById('selectedModel');
+            
+                modelButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        modelButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        selectedModelInput.value = button.getAttribute('data-model');
+                    });
+                });
+            });
+       
+            const form = document.getElementById('detectionForm');
+            const loader = document.getElementById('loaderOverlay');
+
+            form.addEventListener('submit', () => {
+                loader.style.display = 'flex'; // show loader
+            });
+        </script>
+
+{% endblock content%}

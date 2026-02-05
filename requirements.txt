@@ -1,0 +1,10 @@
+Django<4.0
+pillow
+opencv-python
+tensorflow
+keras
+numpy<2.0
+matplotlib
+requests
+urllib3
+xhtml2pdf

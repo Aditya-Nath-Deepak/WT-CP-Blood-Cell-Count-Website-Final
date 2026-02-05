@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}OTP{% endblock title %}
+{% block content %}
+
+        <style>
+            .otp_container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .otp_box {
+                width: 50px;
+                height: 50px; 
+                font-size: 24px;
+                text-align: center;
+                margin-right: 2px;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                outline: none;
+                transition: border-color 0.3s ease;
+            }
+            
+            .otp_box:focus {
+                border-color: #57ccc3; 
+            }
+            
+        </style>
+
+        <!-- Header Start -->
+        <div class="container-fluid bg-breadcrumb">
+            <ul class="breadcrumb-animation">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Login</h1>
+                <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active text-primary">Login</li>
+                </ol>    
+            </div>
+        </div>
+        <!-- Header End -->
+
+        <!-- OTP Start -->
+        <div class="container-fluid contact py-5">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center ">
+                    <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.3s">
+                        <img src="{% static 'user/img/login.jpg' %}" alt="" style="height: 500px;">
+                    </div>
+                    <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.1s">
+                        <h2 class="display-5 mb-4 text-center">OTP</h2>
+                        <form method="post" enctype="multipart/form-data" class="contact_form d-flex flex-column align-items-center" id="contact_form">
+                            {% csrf_token %}
+							<div class="d-flex flex-column" style="min-width: 470px;">
+								<div class="otp_container mb-3">
+									<input type="text" class="otp_box" maxlength="1"  name="otp1">
+									<input type="text" class="otp_box" maxlength="1"  name="otp2">
+									<input type="text" class="otp_box" maxlength="1"  name="otp3">
+									<input type="text" class="otp_box" maxlength="1"  name="otp4">
+								</div>
+							</div>
+							<div class="col-10 mt-4">
+                                <button class="btn btn-primary w-100 py-3">Verify</button>
+                            </div>
+						</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- OTP End -->
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const otpInputs = document.querySelectorAll('.otp_box');
+        
+                otpInputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        if (e.target.value.length === 1) {
+                            const nextInput = otpInputs[index + 1];
+                            if (nextInput) {
+                                nextInput.focus();
+                            }
+                        }
+                    });
+        
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && !e.target.value) {
+                            const previousInput = otpInputs[index - 1];
+                            if (previousInput) {
+                                previousInput.focus();
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+{% endblock content%}

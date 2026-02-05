@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Admin Login{% endblock title %}
+{% block content %}
+
+
+        <!-- Header Start -->
+        <div class="container-fluid bg-breadcrumb">
+            <ul class="breadcrumb-animation">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Admin Login</h1>
+                <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active text-primary">Admin Login</li>
+                </ol>    
+            </div>
+        </div>
+        <!-- Header End -->
+
+        <!-- Signup Start -->
+        <div class="container-fluid contact py-5">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.3s">
+                        <img src="{% static 'user/img/login.jpg' %}" alt="" style="height: 500px;">
+                    </div>
+                    <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.1s">
+                        <h2 class="display-5 mb-4 text-center">Sign in as Admin</h2>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-10">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="name" name="Username" placeholder="Your Name">
+                                        <label for="name">Enter Username</label>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <div class="form-floating">
+                                        <input id="password" name="password" type="password" class="form-control" id="subject" placeholder="Subject">
+                                        <label for="subject">Enter Password</label>
+                                        <button type="button" id="togglePassword" 
+                                            class="btn btn-sm position-absolute" 
+                                            style="top: 50%; right: 10px; transform: translateY(-50%); z-index: 10;">
+                                        Show
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <button class="btn btn-primary w-100 py-3">Login</button>
+                                </div>
+                                <div class="text-center">
+                                    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- Signup End -->
+
+    <script>
+         document
+          .getElementById("togglePassword")
+          .addEventListener("click", function () {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+              passwordField.type = "text";
+              this.textContent = "Hide";
+            } else {
+              passwordField.type = "password";
+              this.textContent = "Show";
+            }
+          });
+    </script>
+{% endblock content%}
